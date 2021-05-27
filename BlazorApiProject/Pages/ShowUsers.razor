@@ -1,0 +1,39 @@
+@page "/json-placeholder"
+@inject HttpClient http;
+
+<h1>API Response of JSON Placeholder</h1>
+<PostForm />
+<button @onclick="@GetUsers"> Get Users </button>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Users) {
+            <tr>
+                <td>@user.id</td>
+                <td>@user.title</td>
+                <td>@user.body</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    List<ApiResponse> Users = new List<ApiResponse>();
+
+    private async Task GetUsers() {
+    Console.WriteLine("We are ain");
+        Users = await http.GetFromJsonAsync<List<ApiResponse>>("https://jsonplaceholder.typicode.com/posts");
+    }
+
+    public class ApiResponse {
+        public int id { get; set; } = 0;
+        public string title { get; set; } = "";
+        public string body { get; set; } = "";
+    }
+}
